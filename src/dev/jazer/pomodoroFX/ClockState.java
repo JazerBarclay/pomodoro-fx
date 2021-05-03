@@ -2,8 +2,8 @@ package dev.jazer.pomodoroFX;
 
 public enum ClockState {
 
-	RUNNING,
-	PAUSED,
+	WORKING,
+	RESTING,
 	STOPPED
 	
 }
