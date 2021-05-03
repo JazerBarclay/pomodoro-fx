@@ -2,7 +2,7 @@ package dev.jazer.pomodoroFX.widgets.button;
 
 import javafx.scene.paint.Color;
 
-public class FastForwardButton extends CanvasButton {
+public class FastForwardButton extends CanvasClickButton {
 
 	public FastForwardButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -24,16 +24,12 @@ public class FastForwardButton extends CanvasButton {
 	public void drawClicked() {
 		gc.setFill(Color.LIGHTBLUE);
 
-		gc.fillPolygon(new double[]{0, (width/5)*4, 0}, new double[]{0, height/2, height}, 3);
-		gc.strokePolygon(new double[]{0, (width/5)*4, 0}, new double[]{0, height/2, height}, 3);
+		gc.fillPolygon(new double[]{0, (getWidth()/5)*4, 0}, new double[]{0, getHeight()/2, getHeight()}, 3);
+		gc.strokePolygon(new double[]{0, (getHeight()/5)*4, 0}, new double[]{0, getHeight()/2, getHeight()}, 3);
 		
-		gc.fillRect((width/5)*4, 0, 8, height);
-		gc.strokeRect((width/5)*4, 0, 8, height);
-	}
-
-	@Override
-	public void drawReleased() {
-		drawClicked();
+		gc.fillRect((getWidth()/5)*4, 0, 8, getHeight());
+		gc.strokeRect((getWidth()/5)*4, 0, 8, getHeight());
+		
 	}
 
 }

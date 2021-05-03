@@ -2,7 +2,7 @@ package dev.jazer.pomodoroFX.widgets.button;
 
 import javafx.scene.paint.Color;
 
-public class StopButton extends CanvasButton {
+public class StopButton extends CanvasClickButton {
 	
 	public StopButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -22,13 +22,9 @@ public class StopButton extends CanvasButton {
 	
 	@Override
 	public void drawClicked() {
-		gc.setFill(Color.PALEVIOLETRED);
-		gc.fillRect(0, 0, width, height);
-	}
-
-	@Override
-	public void drawReleased() {
-		drawClicked();
+		gc.setStroke(Color.PALEVIOLETRED);
+		gc.strokeRect(0, 0, getWidth(), getHeight());
+		gc.strokeRect(1, 1, getWidth()-2, getHeight()-2);
 	}
 	
 }

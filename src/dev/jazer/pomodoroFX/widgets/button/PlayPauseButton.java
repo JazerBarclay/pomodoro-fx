@@ -2,7 +2,7 @@ package dev.jazer.pomodoroFX.widgets.button;
 
 import javafx.scene.paint.Color;
 
-public class PlayPauseButton extends CanvasButton {
+public class PlayPauseButton extends CanvasSwitchButton {
 
 	public PlayPauseButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -23,14 +23,14 @@ public class PlayPauseButton extends CanvasButton {
 	@Override
 	public void drawClicked() {
 		gc.setFill(Color.LIGHTYELLOW);
-		gc.fillRect(2, 0, 8, height);
-		gc.fillRect(15, 0, 8, height);
+		gc.fillRect(2, 0, 8, getHeight());
+		gc.fillRect(15, 0, 8, getHeight());
 	}
 
 	@Override
 	public void drawReleased() {
 		gc.setFill(Color.LIGHTGREEN);
-		gc.fillPolygon(new double[]{2, (width/5)*4+3, 2}, new double[]{0, height/2, height}, 3);
+		gc.fillPolygon(new double[]{2, (getWidth()/5)*4+3, 2}, new double[]{0, getHeight()/2, getHeight()}, 3);
 	}
 
 }
