@@ -3,7 +3,6 @@ package dev.jazer.pomodoroFX.widgets.screen;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import javafx.scene.Scene;
@@ -22,6 +21,8 @@ public class Screen extends Scene {
 	private Stage window;
 	private Pane pane;
 	private Canvas background;
+	
+	private Node draggableElement;
 	
 	public Screen(Stage window, Pane pane) {
 		super(pane);
@@ -44,21 +45,28 @@ public class Screen extends Scene {
 		pane.getChildren().add(n);
 	}
 	
+	public void remove(Node n) {
+		pane.getChildren().remove(n);
+	}
+	
 	public void setDraggableElement(Node n) {
-		n.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				xOffset = window.getX() - event.getScreenX();
-				yOffset = window.getY() - event.getScreenY();
-			}
+		System.out.println("Draggable: " + n);
+		if (n == null && draggableElement == null) return;
+		if (n == null) {
+			draggableElement.setOnMousePressed((MouseEvent e) -> {});
+			draggableElement.setOnMouseDragged((MouseEvent e) -> {});
+			return;
+		}
+		draggableElement = n;
+		draggableElement.setOnMousePressed((MouseEvent event) -> {
+			System.out.println("CLICKED");
+			xOffset = window.getX() - event.getScreenX();
+			yOffset = window.getY() - event.getScreenY();
 		});
 
-		n.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				window.setX(event.getScreenX() + xOffset);
-				window.setY(event.getScreenY() + yOffset);
-			}
+		draggableElement.setOnMouseDragged((MouseEvent event) -> {
+			window.setX(event.getScreenX() + xOffset);
+			window.setY(event.getScreenY() + yOffset);
 		});
 	}
 	

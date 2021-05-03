@@ -26,7 +26,7 @@ public class Model {
 	
 	public void start() {
 
-		timerState = ClockState.RUNNING;
+		if (timerState == ClockState.STOPPED) timerState = ClockState.WORKING;
 		if (durationRemaining == 0) durationRemaining = 1000*60*25;
 		endTime = new Date().getTime()+durationRemaining;
 		timer = new Timer();
@@ -34,16 +34,22 @@ public class Model {
 			@Override
 			public void run() {
 				durationRemaining = endTime - new Date().getTime();
-				if (new Date().getTime() > endTime) timer.cancel();
+				if (new Date().getTime() > endTime) {
+					timer.cancel();
+					if (timerState == ClockState.WORKING) {
+						timerState = ClockState.RESTING;
+						durationRemaining = 1000*60*5;
+						start();
+					} else {
+						timerState = ClockState.WORKING;
+						durationRemaining = 1000*60*25;
+						start();
+					}
+				}
 				if (observer != null) observer.onChange();
 			}
-		}, 0, 100);
+		}, 0, 50);
 		
-	}
-	
-	public void pause() {
-		timerState = ClockState.PAUSED;
-		timer.cancel();
 	}
 	
 	public void stop() {

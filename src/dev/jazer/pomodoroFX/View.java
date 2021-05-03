@@ -1,10 +1,6 @@
 package dev.jazer.pomodoroFX;
 
-import dev.jazer.pomodoroFX.widgets.button.CloseButton;
-import dev.jazer.pomodoroFX.widgets.button.CornerButton;
-import dev.jazer.pomodoroFX.widgets.button.FastForwardButton;
-import dev.jazer.pomodoroFX.widgets.button.PlayPauseButton;
-import dev.jazer.pomodoroFX.widgets.button.StopButton;
+import dev.jazer.pomodoroFX.widgets.button.*;
 import dev.jazer.pomodoroFX.widgets.screen.Screen;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -16,6 +12,8 @@ import javafx.stage.Stage;
 
 public class View {
 	
+	private boolean running;
+	
 	private Model model;
 	
 	private Stage window;
@@ -23,44 +21,59 @@ public class View {
 
 	private Label lblTimer;
 	private CloseButton btnClose;
-	private PlayPauseButton btnPlay;
+	private PinButton btnPin;
+	private PlayButton btnPlay;
 	private StopButton btnStop;
-	private FastForwardButton btnFF;
 	private CornerButton btnPosition;
 
 	public View(Stage window, Model model) {
 		this.window = window;
 		this.model = model;
 		
-		window.setWidth(300);
+		window.setWidth(200);
 		window.setHeight(100);
 		
 		lblTimer = new Label("25:00");
-		lblTimer.setFont(new Font("Arial", 28));
+		lblTimer.setFont(new Font("Arial", 32));
 		lblTimer.setTextFill(Color.WHITE);
 		lblTimer.setLayoutY(13);
-		lblTimer.setPrefWidth(300);
+		lblTimer.setPrefWidth(window.getWidth());
 		lblTimer.setAlignment(Pos.CENTER);
 
-		btnClose = new CloseButton(275, 5, 20);
-		btnPlay = new PlayPauseButton(140, 60, 25);
-		btnFF = new FastForwardButton(190, 60, 25);
-		btnStop = new StopButton(90, 60, 25);
-		btnPosition = new CornerButton(280, 80, 15);
+		btnClose = new CloseButton((int)window.getWidth()-25, 5, 20);
+		btnPin = new PinButton(5,5,20);
+		btnPlay = new PlayButton((int)(window.getWidth()/2)-12, 60, 25);
+		btnStop = new StopButton((int)(window.getWidth()/2)-12, 60, 25);
+		btnPosition = new CornerButton((int)(window.getWidth()-20), 80, 15);
 		
 		screen = new Screen(window, new Pane());
 		screen.add(lblTimer);
 		screen.add(btnClose);
-		screen.add(btnPlay);
-		screen.add(btnFF);
-		screen.add(btnStop);
+		screen.add(btnPin);
 		screen.add(btnPosition);
 
 		screen.setDraggableElement(lblTimer);
-//		screen.positionBottomRight();
+		screen.positionBottomRight();
+		
+
+		screen.add(btnPlay);
+		setPlay();
 		
 		window.setScene(screen);
-		
+	}
+	
+	public void setPlay() {
+		if (!running) return;
+		running = false;
+		screen.add(btnPlay);
+		screen.remove(btnStop);
+	}
+	
+	public void setStop() {
+		if (running) return;
+		running = true;
+		screen.add(btnStop);
+		screen.remove(btnPlay);
 	}
 	
 	public void updateTimer(int mins, int secs) {
@@ -76,16 +89,23 @@ public class View {
 	public void setController(Controller controller) {
 		btnClose.setOnClickHandler(() -> { window.hide(); controller.onClosePressed(); });
 		btnPlay.setOnClickHandler(() -> controller.onPlayPressed());
-		btnPlay.setOnReleaseHandler(() -> controller.onPlayReleased());
 		btnStop.setOnClickHandler(() -> controller.onStopPressed());
-		btnStop.setOnReleaseHandler(() -> controller.onStopPressed());
 		btnPosition.setOnClickHandler(() -> screen.positionBottomRight());
-		btnPosition.setOnReleaseHandler(() -> screen.positionBottomRight());
+		
+		btnPin.setOnClickHandler(() -> {
+			screen.setDraggableElement(null);
+		});
+		btnPin.setOnReleaseHandler(() -> {
+			screen.setDraggableElement(lblTimer);
+		});
 	}
 	
 	public void update() {
 		Platform.runLater(() -> updateTimer((int)(model.durationRemaining/1000/60), (int)(model.durationRemaining/1000)%60));
-		btnPlay.setIsClicked((model.timerState == ClockState.STOPPED ? false : true));
+		Platform.runLater(() -> {
+			if (model.timerState == ClockState.STOPPED) setPlay();
+			else if (model.timerState == ClockState.WORKING) setStop();
+		});
 	}
 
 }
