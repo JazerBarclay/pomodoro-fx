@@ -22,7 +22,7 @@ public class CloseButton extends CanvasClickButton {
 	
 	@Override
 	public void drawClicked() {
-		gc.setFill(Color.GREY);
+		gc.setFill(Color.color(0.168, 0.188, 0.231));
 		gc.fillPolygon(new double[]{5, getWidth() - 3, getWidth() - 5, 3}, new double[]{3, getHeight() - 5, getHeight() - 3, 5}, 4);
 		gc.fillPolygon(new double[]{getWidth() - 5, getWidth() - 3, 5, 3}, new double[]{3, 5, getHeight() - 3, getHeight() - 5}, 4);
 	}

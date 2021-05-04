@@ -22,7 +22,8 @@ public class StopButton extends CanvasClickButton {
 	
 	@Override
 	public void drawClicked() {
-		gc.setStroke(Color.PALEVIOLETRED);
+		gc.setStroke(Color.color(0.168, 0.188, 0.231));
+		gc.setLineWidth(2);
 		gc.strokeRect(0, 0, getWidth(), getHeight());
 		gc.strokeRect(1, 1, getWidth()-2, getHeight()-2);
 	}

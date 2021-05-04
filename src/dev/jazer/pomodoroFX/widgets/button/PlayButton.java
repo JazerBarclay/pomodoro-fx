@@ -22,7 +22,8 @@ public class PlayButton extends CanvasClickButton {
 	
 	@Override
 	public void drawClicked() {
-		gc.setStroke(Color.LIGHTGREEN);
+		gc.setStroke(Color.color(0.168, 0.188, 0.231));
+		gc.setLineWidth(2);
 		gc.strokePolygon(new double[]{2, (getWidth()/5)*4+3, 2}, new double[]{0, getHeight()/2, getHeight()}, 3);
 	}
 

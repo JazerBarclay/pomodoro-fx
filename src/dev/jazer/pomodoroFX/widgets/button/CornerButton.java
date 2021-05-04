@@ -22,7 +22,7 @@ public class CornerButton extends CanvasClickButton {
 	
 	@Override
 	public void drawClicked() {
-		gc.setFill(Color.color(.4, .4, .4));
+		gc.setFill(Color.color(0.168, 0.188, 0.231));
 		
 		gc.fillPolygon(new double[]{getWidth(), getWidth(), 0}, new double[]{0, getHeight(), getHeight()}, 3);
 //		gc.strokePolygon(new double[]{width, width, 0}, new double[]{0, height, height}, 3);
