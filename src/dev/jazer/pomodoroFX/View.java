@@ -47,7 +47,7 @@ public class View {
 		bar.getGraphicsContext2D().fillRect(0, 0, bar.getWidth(), bar.getHeight());
 		
 		lblTimer = new Label("25:00");
-		lblTimer.setLayoutY(10);
+		lblTimer.setLayoutY((int)window.getHeight()/2-38);
 		lblTimer.setFont(new Font("Arial", 48));
 		lblTimer.setTextFill(Color.color(0.168, 0.188, 0.231));
 		lblTimer.setPrefWidth(window.getWidth());
@@ -59,7 +59,7 @@ public class View {
 		btnPlay = new PlayButton((int)(window.getWidth()/2)-10, (int)window.getHeight()-35, 20);
 		btnStop = new StopButton((int)(window.getWidth()/2)-10, (int)window.getHeight()-35, 20);
 		
-		progress = new CanvasProgressBar((int)window.getWidth()/2-50, (int)window.getHeight()/2+1, 100, 20);
+		progress = new CanvasProgressBar((int)window.getWidth()/2-50, 5, 100, 20);
 		btnPosition = new CornerButton((int)window.getWidth()-20, (int)window.getHeight()-20, 15);
 		
 		screen = new Screen(window, new Pane());
