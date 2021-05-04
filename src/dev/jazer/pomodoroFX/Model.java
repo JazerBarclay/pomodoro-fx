@@ -31,8 +31,6 @@ public class Model {
 	public void start() {
 		
 		if (timerState == ClockState.STOPPED) timerState = ClockState.WORKING;
-		if (timerState == ClockState.WORKING) View.playWAV("work");
-		if (timerState == ClockState.RESTING) View.playWAV("break");
 		
 		if (durationRemaining == 0) durationRemaining = defaultWorkDuration;
 		endTime = new Date().getTime()+durationRemaining;
@@ -61,7 +59,6 @@ public class Model {
 	}
 	
 	public void stop() {
-		View.playWAV("stop");
 		timerState = ClockState.STOPPED;
 		timer.cancel();
 		endTime = 0;

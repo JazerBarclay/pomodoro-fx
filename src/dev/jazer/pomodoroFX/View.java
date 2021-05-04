@@ -1,6 +1,14 @@
 package dev.jazer.pomodoroFX;
 
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import dev.jazer.pomodoroFX.widgets.CanvasProgressBar;
 import dev.jazer.pomodoroFX.widgets.button.*;
@@ -10,7 +18,6 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -33,7 +40,7 @@ public class View {
 	private StopButton btnStop;
 	private CanvasProgressBar progress;
 	private CornerButton btnPosition;
-
+	
 	public View(Stage window, Model model) {
 		this.window = window;
 		this.model = model;
@@ -85,6 +92,7 @@ public class View {
 		if (!running) return;
 		running = false;
 		resting = false;
+		playWAV("stop");
 		screen.add(btnPlay);
 		screen.remove(btnStop);
 		progress.reset();
@@ -95,9 +103,11 @@ public class View {
 		if (resting) {
 			resting = false;
 			progress.increment();
+			playWAV("work");
 		}
 		if (running) return;
 		running = true;
+		playWAV("work");
 		screen.add(btnStop);
 		screen.remove(btnPlay);
 		progress.increment();
@@ -105,8 +115,9 @@ public class View {
 
 	public void setResting() {
 		screen.setBackground(Color.LIGHTGREEN);
-		if (resting) return; 
+		if (resting) return;
 		resting = true;
+		playWAV("break");
 		progress.increment();
 	}
 	
@@ -126,9 +137,13 @@ public class View {
 			controller.onClosePressed(); 
 		});
 		
-		btnPlay.setOnClickHandler(() -> controller.onPlayPressed());
+		btnPlay.setOnClickHandler(() -> {
+			controller.onPlayPressed();
+		});
 		
-		btnStop.setOnClickHandler(() -> controller.onStopPressed());
+		btnStop.setOnClickHandler(() -> {
+			controller.onStopPressed();
+		});
 		
 		btnPosition.setOnClickHandler(() -> screen.positionBottomRight());
 		
@@ -137,12 +152,25 @@ public class View {
 		btnPin.setOnReleaseHandler(() -> screen.setDraggableElement(lblTimer));
 	}
 	
-	public static synchronized void playWAV(String audioFile) {
+	public static synchronized void playWAV(String fileName) {
+
 		try {
-			AudioClip clip = new AudioClip(new File("res/" + audioFile + ".wav").toURI().toString());
-			clip.play();
+			InputStream is = View.class.getResourceAsStream("/sound/"+fileName+".wav");
+			InputStream bufferedIn = new BufferedInputStream(is);
+			AudioInputStream st = AudioSystem.getAudioInputStream(bufferedIn);
+			Clip clip = AudioSystem.getClip();
+			clip.open(st);
+			clip.setFramePosition(0);
+			clip.start();
+		} catch (UnsupportedAudioFileException e) {
+		    throw new IllegalArgumentException("Unsupported audio format: '" + fileName + "'", e);
+		} catch (LineUnavailableException e) {
+		    throw new IllegalArgumentException("Line unavailable. Could not play '" + fileName + "'", e);
+		} catch (IOException e) {
+		    throw new IllegalArgumentException("IO exception. Could not play '" + fileName + "'", e);
 		} catch (Exception e) {
-			System.err.println("Failed to play media " + audioFile + ".wav");
+			System.err.println("Failed to play media");
+			e.printStackTrace();
 		}
 
 	}

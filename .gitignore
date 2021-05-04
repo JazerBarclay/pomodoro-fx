@@ -1,1 +1,3 @@
 /bin
+/sys/*
+!/sys/.gitkeep
