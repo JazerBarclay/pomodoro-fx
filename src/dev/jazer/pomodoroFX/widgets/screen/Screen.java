@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class Screen extends Scene {
@@ -49,8 +50,20 @@ public class Screen extends Scene {
 		pane.getChildren().remove(n);
 	}
 	
+	public void setBackground(Paint p) {
+		GraphicsContext gc = background.getGraphicsContext2D();
+		gc.setFill(p);
+		gc.fillRect(0, 0, window.getWidth(), window.getHeight());
+	}
+	
+	public void setBorder(Paint p) {
+		GraphicsContext gc = background.getGraphicsContext2D();
+		gc.setStroke(p);
+		gc.setLineWidth(2);
+		gc.strokeRect(0, 0, window.getWidth(), window.getHeight());
+	}
+	
 	public void setDraggableElement(Node n) {
-		System.out.println("Draggable: " + n);
 		if (n == null && draggableElement == null) return;
 		if (n == null) {
 			draggableElement.setOnMousePressed((MouseEvent e) -> {});
@@ -59,7 +72,6 @@ public class Screen extends Scene {
 		}
 		draggableElement = n;
 		draggableElement.setOnMousePressed((MouseEvent event) -> {
-			System.out.println("CLICKED");
 			xOffset = window.getX() - event.getScreenX();
 			yOffset = window.getY() - event.getScreenY();
 		});
