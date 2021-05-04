@@ -20,8 +20,8 @@ public class Model {
 		timerState = ClockState.STOPPED;
 		durationRemaining = 0;
 		endTime = 0;
-		defaultWorkDuration = 1000*5;
-		defaultRestDuration = 1000*5;
+		defaultWorkDuration = 1000*60*25;
+		defaultRestDuration = 1000*60*5;
 	}
 
 	public void setObserver(PropertyChangeListener observer) {
