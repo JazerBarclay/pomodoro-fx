@@ -38,6 +38,7 @@ public class View {
 		this.window = window;
 		this.model = model;
 		
+		window.setTitle("Pomodoro Timer by Jazer");
 		window.setWidth(220);
 		window.setHeight(130);
 		

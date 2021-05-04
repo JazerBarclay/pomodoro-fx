@@ -20,8 +20,8 @@ public class Model {
 		timerState = ClockState.STOPPED;
 		durationRemaining = 0;
 		endTime = 0;
-		defaultWorkDuration = 1000*60*25;
-		defaultRestDuration = 1000*60*5;
+		defaultWorkDuration = 1000*5;
+		defaultRestDuration = 1000*5;
 	}
 
 	public void setObserver(PropertyChangeListener observer) {
@@ -29,13 +29,14 @@ public class Model {
 	}
 	
 	public void start() {
-
 		
 		if (timerState == ClockState.STOPPED) timerState = ClockState.WORKING;
 		if (timerState == ClockState.WORKING) View.playWAV("work");
 		if (timerState == ClockState.RESTING) View.playWAV("break");
+		
 		if (durationRemaining == 0) durationRemaining = defaultWorkDuration;
 		endTime = new Date().getTime()+durationRemaining;
+		
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -60,7 +61,7 @@ public class Model {
 	}
 	
 	public void stop() {
-		View.playWAV("notification");
+		View.playWAV("stop");
 		timerState = ClockState.STOPPED;
 		timer.cancel();
 		endTime = 0;
