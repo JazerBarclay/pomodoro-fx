@@ -81,7 +81,7 @@ public class View {
 	}
 	
 	public void setStopped() {
-		screen.setBackground(Color.color(.749,.38,.416));
+		screen.setBackground(Color.color(.8, .4, .4));
 		if (!running) return;
 		running = false;
 		resting = false;
@@ -138,8 +138,13 @@ public class View {
 	}
 	
 	public static synchronized void playWAV(String audioFile) {
-		AudioClip clip = new AudioClip(new File("res/" + audioFile + ".wav").toURI().toString());
-		clip.play();
+		try {
+			AudioClip clip = new AudioClip(new File("res/" + audioFile + ".wav").toURI().toString());
+			clip.play();
+		} catch (Exception e) {
+			System.err.println("Failed to play media " + audioFile + ".wav");
+		}
+
 	}
 	
 	public void update() {
