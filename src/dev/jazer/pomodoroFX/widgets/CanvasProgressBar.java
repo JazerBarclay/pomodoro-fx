@@ -41,6 +41,12 @@ public class CanvasProgressBar extends Canvas {
 		draw();
 	}
 	
+	public void decrement() {
+		if (count > complete) count--;
+		clear();
+		draw();
+	}
+	
 	public void reset() {
 		clear();
 		count = 0;

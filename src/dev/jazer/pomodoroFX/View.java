@@ -95,7 +95,7 @@ public class View {
 		playWAV("stop");
 		screen.add(btnPlay);
 		screen.remove(btnStop);
-		progress.reset();
+		progress.decrement();
 	}
 
 	public void setRunning() {
